@@ -52,6 +52,7 @@ CREATE TABLE geo (
 );
 CREATE INDEX geo_gist ON geo USING GIST(geom);
 CREATE INDEX geo_idx ON geo(id);
+CREATE INDEX IF NOT EXISTS geo_props_idx ON geom USING GIN(props);:
 
 DROP TABLE IF EXISTS styles;
 CREATE TABLE styles (
