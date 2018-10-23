@@ -248,6 +248,8 @@ export default {
             accessToken: mapboxgl.accessToken,
         }));
 
+        this.map.draw = new MapboxDraw();
+
         this.load_settings();
 
         this.map.gl.on('style.load', () => {
