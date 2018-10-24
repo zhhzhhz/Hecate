@@ -87,7 +87,15 @@ export default {
             }).then((body) => {
                 this.feature = body;
                 this.loading = false;
+
+                this.highlight(this.feature);
             });
+        },
+        highlight: function(feature) {
+            if (!feature) return;
+
+            this.map.gl.addControl(this.map.draw);
+            this.map.draw.add(feature);
         }
     },
     render: h => h(App),

@@ -280,7 +280,7 @@ export default {
 
             let clicked = this.map.gl.queryRenderedFeatures(e.point)[0];
 
-            if (clicked && clicked.properties['hecate:id']) {
+            if (clicked && clicked.properties['hecate:id'] && clicked.properties['hecate:id'] !== this.feature) {
                 this.feature = clicked.properties['hecate:id'];
             }
         });
