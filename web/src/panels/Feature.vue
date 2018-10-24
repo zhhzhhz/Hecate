@@ -69,6 +69,9 @@ export default {
     created: function() {
         this.get(this.id);
     },
+    beforeDestroy: function() {
+        this.map.gl.removeControl(this.map.draw);
+    },
     methods: {
         close: function() {
             this.$emit('close');
