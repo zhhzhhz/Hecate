@@ -63,14 +63,18 @@ export default {
     },
     watch: {
         id: function() {
+            this.draw.deleteAll();
             this.get(this.id);
         }
     },
     created: function() {
+        this.draw = new MapboxDraw();
+        this.map.gl.addControl(this.draw);
+
         this.get(this.id);
     },
     beforeDestroy: function() {
-        this.map.gl.removeControl(this.map.draw);
+        this.map.gl.removeControl(this.draw);
     },
     methods: {
         close: function() {
@@ -96,9 +100,7 @@ export default {
         },
         highlight: function(feature) {
             if (!feature) return;
-
-            this.map.gl.addControl(this.map.draw);
-            this.map.draw.add(feature);
+            this.draw.add(feature);
         }
     },
     render: h => h(App),
