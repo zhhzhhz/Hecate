@@ -100,6 +100,10 @@ export default {
         },
         highlight: function(feature) {
             if (!feature) return;
+
+            //Mapbox GL Draw doesn't work with numeric IDs
+            feature.id = String(feature.id);
+
             this.draw.add(feature);
         }
     },
