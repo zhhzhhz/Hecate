@@ -42,11 +42,7 @@ mod test {
             conn.batch_execute(&*table_sql).unwrap();
         }
 
-        let mut server = Command::new("cargo").args(&[
-            "run",
-            "--",
-            "--database_read", "hecate_read@localhost:5432/hecate"
-        ]).spawn().unwrap();
+        let mut server = Command::new("cargo").args(&[ "run" ]).spawn().unwrap();
         thread::sleep(Duration::from_secs(1));
 
         { //Create Username
@@ -72,7 +68,41 @@ mod test {
                     "geometry": { "type": "MultiPolygon", "coordinates": [ [ [ [ -77.13363647460938, 38.83542884007305 ], [ -76.96403503417969, 38.83542884007305 ], [ -76.96403503417969, 38.974891064341726 ], [ -77.13363647460938, 38.974891064341726 ], [ -77.13363647460938, 38.83542884007305 ] ] ] ] }
                 }"#)
                 .basic_auth("ingalls", Some("yeaheh"))
-                .header(reqwest::header::ContentType::json())
+                .header(reqwest::header::CONTENT_TYPE, "application/json")
+                .send()
+                .unwrap();
+
+            assert_eq!(resp.text().unwrap(), "true");
+            assert!(resp.status().is_success());
+        }
+
+        { //Set alt Bounds
+            let client = reqwest::Client::new();
+            let mut resp = client.post("http://localhost:8000/api/data/bounds/alt")
+                .body(r#"{
+                    "type": "Feature",
+                    "properties": {},
+                    "geometry": { "type": "MultiPolygon", "coordinates": [ [ [ [ -77.13363647460938, 38.83542884007305 ], [ -76.96403503417969, 38.83542884007305 ], [ -76.96403503417969, 38.974891064341726 ], [ -77.13363647460938, 38.974891064341726 ], [ -77.13363647460938, 38.83542884007305 ] ] ] ] }
+                }"#)
+                .basic_auth("ingalls", Some("yeaheh"))
+                .header(reqwest::header::CONTENT_TYPE, "application/json")
+                .send()
+                .unwrap();
+
+            assert_eq!(resp.text().unwrap(), "true");
+            assert!(resp.status().is_success());
+        }
+
+        { //Set alt2 Bounds
+            let client = reqwest::Client::new();
+            let mut resp = client.post("http://localhost:8000/api/data/bounds/alt2")
+                .body(r#"{
+                    "type": "Feature",
+                    "properties": {},
+                    "geometry": { "type": "MultiPolygon", "coordinates": [ [ [ [ -77.13363647460938, 38.83542884007305 ], [ -76.96403503417969, 38.83542884007305 ], [ -76.96403503417969, 38.974891064341726 ], [ -77.13363647460938, 38.974891064341726 ], [ -77.13363647460938, 38.83542884007305 ] ] ] ] }
+                }"#)
+                .basic_auth("ingalls", Some("yeaheh"))
+                .header(reqwest::header::CONTENT_TYPE, "application/json")
                 .send()
                 .unwrap();
 
@@ -91,7 +121,7 @@ mod test {
                     "geometry": { "type": "Point", "coordinates": [ -77.01210021972656,38.925763232374514 ] }
                 }"#)
                 .basic_auth("ingalls", Some("yeaheh"))
-                .header(reqwest::header::ContentType::json())
+                .header(reqwest::header::CONTENT_TYPE, "application/json")
                 .send()
                 .unwrap();
 
@@ -110,7 +140,7 @@ mod test {
                     "geometry": { "type": "Point", "coordinates": [ -76.94755554199219,38.90385833966778 ] }
                 }"#)
                 .basic_auth("ingalls", Some("yeaheh"))
-                .header(reqwest::header::ContentType::json())
+                .header(reqwest::header::CONTENT_TYPE, "application/json")
                 .send()
                 .unwrap();
 
@@ -122,7 +152,34 @@ mod test {
             let mut resp = reqwest::get("http://localhost:8000/api/data/bounds").unwrap();
 
             let json_body: serde_json::value::Value = resp.json().unwrap();
-            assert_eq!(json_body, json!(["dc"]));
+            assert_eq!(json_body, json!(["alt", "alt2", "dc"]));
+
+            assert!(resp.status().is_success());
+        }
+
+        { //List Bounds w/ Limit
+            let mut resp = reqwest::get("http://localhost:8000/api/data/bounds?limit=2").unwrap();
+
+            let json_body: serde_json::value::Value = resp.json().unwrap();
+            assert_eq!(json_body, json!(["alt", "alt2"]));
+
+            assert!(resp.status().is_success());
+        }
+
+        { //List Bounds w/ Filter
+            let mut resp = reqwest::get("http://localhost:8000/api/data/bounds?filter=alt").unwrap();
+
+            let json_body: serde_json::value::Value = resp.json().unwrap();
+            assert_eq!(json_body, json!(["alt", "alt2"]));
+
+            assert!(resp.status().is_success());
+        }
+
+        { //List Bounds w/ Filter & Limit
+            let mut resp = reqwest::get("http://localhost:8000/api/data/bounds?filter=alt&limit=1").unwrap();
+
+            let json_body: serde_json::value::Value = resp.json().unwrap();
+            assert_eq!(json_body, json!(["alt"]));
 
             assert!(resp.status().is_success());
         }
@@ -149,7 +206,7 @@ mod test {
                     "geometry": null
                 }"#)
                 .basic_auth("ingalls", Some("yeaheh"))
-                .header(reqwest::header::ContentType::json())
+                .header(reqwest::header::CONTENT_TYPE, "application/json")
                 .send()
                 .unwrap();
 
@@ -168,7 +225,7 @@ mod test {
                     "geometry": { "type": "Point", "coordinates": [ -77.01210021972656,38.925763232374514 ] }
                 }"#)
                 .basic_auth("ingalls", Some("yeaheh"))
-                .header(reqwest::header::ContentType::json())
+                .header(reqwest::header::CONTENT_TYPE, "application/json")
                 .send()
                 .unwrap();
 
@@ -203,7 +260,7 @@ mod test {
                     "geometry": { "type": "Polygon", "coordinates": [ [ [ -29.8828125, 62.59334083012024 ], [ -11.6015625, 62.59334083012024 ], [ -11.6015625, 67.47492238478702 ], [ -29.8828125, 67.47492238478702 ], [ -29.8828125, 62.59334083012024 ] ] ] }
                 }"#)
                 .basic_auth("ingalls", Some("yeaheh"))
-                .header(reqwest::header::ContentType::json())
+                .header(reqwest::header::CONTENT_TYPE, "application/json")
                 .send()
                 .unwrap();
 
@@ -228,7 +285,7 @@ mod test {
             let mut resp = reqwest::get("http://localhost:8000/api/data/bounds").unwrap();
 
             let json_body: serde_json::value::Value = resp.json().unwrap();
-            assert_eq!(json_body, json!([]));
+            assert_eq!(json_body, json!(["alt", "alt2"]));
 
             assert!(resp.status().is_success());
         }

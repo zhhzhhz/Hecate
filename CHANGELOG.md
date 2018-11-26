@@ -10,6 +10,51 @@
 
 # Version History
 
+## v0.52.0
+
+
+- :rocket: Add filter consistency to users and bounds APIs
+- :tada: `users` has `limit` & `filter` param
+- :tada: `bounds` has `limit` & `filter` param
+- :rocket: `users` & `bounds` no longer require 2 function with rocket@0.4
+
+## v0.51.0
+
+- :tada: Add database check to ensure connections work before starting server
+
+## v0.50.1
+
+- :bug: Fix regression where Data => String is not supported in release builds
+
+## v0.50.0
+
+- :arrow_up: [BREAKING] Update to `nightly-2018-11-19` per README instructions to compile
+- :arrow_up: Update to Rocket@0.4
+
+## v0.49.3
+
+- [UI] Much better session handling, refreshing the page no longer marks you as logged out, when you actually still have a valid session cookie!
+- [UI] Add User Listing to admin panel
+- [UI] Add Self Modal to view your own account information when signed in
+- [UI] Add clickable usernames to open a user's public profile
+- [UI] Load auth settings at startup to allow components to conditionally request content - avoiding 401 errors where possible by telling the user they aren't logged in/aren't admin, etc.
+- [UI] Fix turf bbox calculation bug in Delta Panel
+- [UI] Fix Foot component error in Features Panel
+
+## v0.49.2
+
+- [UI] More whitespace fixes in deltas panel
+
+## v0.49.1
+
+- [UI] Fix spacing on main toolbar
+- [UI] Fix whitespace & overflow on delta message
+
+## v0.49.0
+
+- :rocket: Make fallback for `database_read` flag
+- :tada: Schema now creates a `hecate` & `hecate_read` user instead of using the `postgres` user by default
+
 ## v0.48.3
 
 - :arrow_up: Update to latest deps

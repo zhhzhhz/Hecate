@@ -46,8 +46,7 @@ mod test {
         let mut server = Command::new("cargo").args(&[
             "run",
             "--",
-            "--auth", env::current_dir().unwrap().join("tests/fixtures/auth.closed.json").to_str().unwrap(),
-            "--database_read", "hecate_read@localhost:5432/hecate"
+            "--auth", env::current_dir().unwrap().join("tests/fixtures/auth.closed.json").to_str().unwrap()
         ]).spawn().unwrap();
         thread::sleep(Duration::from_secs(1));
 
@@ -73,7 +72,7 @@ mod test {
                     }
                 }"#)
                 .basic_auth("ingalls", Some("yeaheh"))
-                .header(reqwest::header::ContentType::json())
+                .header(reqwest::header::CONTENT_TYPE, "application/json")
                 .send()
                 .unwrap();
 
@@ -98,7 +97,7 @@ mod test {
                     }
                 }"#)
                 .basic_auth("ingalls", Some("yeaheh"))
-                .header(reqwest::header::ContentType::json())
+                .header(reqwest::header::CONTENT_TYPE, "application/json")
                 .send()
                 .unwrap();
 
@@ -123,7 +122,7 @@ mod test {
                     }
                 }"#)
                 .basic_auth("ingalls", Some("yeaheh"))
-                .header(reqwest::header::ContentType::json())
+                .header(reqwest::header::CONTENT_TYPE, "application/json")
                 .send()
                 .unwrap();
 
@@ -149,7 +148,7 @@ mod test {
                     }
                 }"#)
                 .basic_auth("ingalls", Some("yeaheh"))
-                .header(reqwest::header::ContentType::json())
+                .header(reqwest::header::CONTENT_TYPE, "application/json")
                 .send()
                 .unwrap();
 
@@ -201,7 +200,7 @@ mod test {
                     }
                 }"#)
                 .basic_auth("ingalls", Some("yeaheh"))
-                .header(reqwest::header::ContentType::json())
+                .header(reqwest::header::CONTENT_TYPE, "application/json")
                 .send()
                 .unwrap();
 
@@ -256,7 +255,7 @@ mod test {
                     }]
                 }"#)
                 .basic_auth("ingalls", Some("yeaheh"))
-                .header(reqwest::header::ContentType::json())
+                .header(reqwest::header::CONTENT_TYPE, "application/json")
                 .send()
                 .unwrap();
 
@@ -310,7 +309,7 @@ mod test {
                     }]
                 }"#)
                 .basic_auth("ingalls", Some("yeaheh"))
-                .header(reqwest::header::ContentType::json())
+                .header(reqwest::header::CONTENT_TYPE, "application/json")
                 .send()
                 .unwrap();
 

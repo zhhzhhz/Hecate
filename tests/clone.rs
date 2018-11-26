@@ -40,11 +40,7 @@ mod test {
             conn.batch_execute(&*table_sql).unwrap();
         }
 
-        let mut server = Command::new("cargo").args(&[
-            "run",
-            "--",
-            "--database_read", "hecate_read@localhost:5432/hecate"
-        ]).spawn().unwrap();
+        let mut server = Command::new("cargo").args(&[ "run" ]).spawn().unwrap();
         thread::sleep(Duration::from_secs(1));
 
         { //Create Username
@@ -64,7 +60,7 @@ mod test {
                     "geometry": { "type": "Point", "coordinates": [ -77.01210021972656,38.925763232374514 ] }
                 }"#)
                 .basic_auth("ingalls", Some("yeaheh"))
-                .header(reqwest::header::ContentType::json())
+                .header(reqwest::header::CONTENT_TYPE, "application/json")
                 .send()
                 .unwrap();
 

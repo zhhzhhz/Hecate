@@ -18,6 +18,7 @@ pub struct PGStream {
     cursor: String,
     pending: Option<Vec<u8>>,
     trans: postgres::transaction::Transaction<'static>,
+    #[allow(dead_code)]
     conn: Box<r2d2::PooledConnection<r2d2_postgres::PostgresConnectionManager>>
 }
 
@@ -87,7 +88,7 @@ impl std::io::Read for PGStream {
 }
 
 impl PGStream {
-    pub fn new(conn: r2d2::PooledConnection<r2d2_postgres::PostgresConnectionManager>, cursor: String, query: String, params: &[&ToSql]) -> Result<Self, rocket::response::status::Custom<Json>> {
+    pub fn new(conn: r2d2::PooledConnection<r2d2_postgres::PostgresConnectionManager>, cursor: String, query: String, params: &[&ToSql]) -> Result<Self, rocket::response::status::Custom<Json<serde_json::Value>>> {
         let pg_conn = Box::new(conn);
 
         let trans: postgres::transaction::Transaction = unsafe {
